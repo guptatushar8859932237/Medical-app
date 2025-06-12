@@ -7,8 +7,11 @@
 //     </div>
 //   )
 // }
+import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { baseurl } from "../../../Baseurl";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -35,14 +38,33 @@ export default function Login() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleClick = () => {
-    if (validate()) {
-      console.log("Login successful");
-      navigate("/Admin/dashboard");
-    } else {
-      console.log("Validation failed");
+  const handleClick = async () => {
+  if (validate()) {
+    const userData = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const response = await axios.post(`${baseurl}userLogin`, userData);
+      console.log(response);
+
+      if (response.status === 200) {
+        toast.success("Login successful");
+        JSON.stringify(localStorage.setItem("userMedical", JSON.stringify(response.data)));
+        navigate("/Admin/dashboard");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message)
+      console.error("Login failed:", error.response?.data?.message || error.message);
+      // Optionally show error to user
     }
-  };
+
+  } else {
+    console.log("Validation failed");
+  }
+};
+
 
   return (
     <div className="container">
@@ -57,7 +79,7 @@ export default function Login() {
         </div>
         <h4 className="login-title fw-bold">Login</h4>
         <p className="text-end small">
-          <a href="">Don't have an account?</a>
+          <NavLink to="/Register">Don't have an account?</NavLink>
         </p>
         <div className="mb-3">
           <label className="form-label">Email Address</label>
@@ -103,6 +125,7 @@ export default function Login() {
           Login
         </button>
       </div>
+          <ToastContainer />
     </div>
   );
 }
