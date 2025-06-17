@@ -15,7 +15,7 @@ export default function Admin({ isSidebarOpen }) {
         width: isSidebarOpen ? "calc(100% - 250px)" : "100%", // adjust based on sidebar width
         transition: "width 0.3s ease",
       }}>
-      <div className="main-content">
+      <div className="main-content bg-light">
       <Header  />
       <Sidebar />
         <Outlet />

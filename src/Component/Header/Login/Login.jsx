@@ -52,14 +52,13 @@ export default function Login() {
       if (response.status === 200) {
         toast.success("Login successful");
         JSON.stringify(localStorage.setItem("userMedical", JSON.stringify(response.data)));
-        navigate("/Admin/dashboard");
+        navigate("/Homepage");
       }
     } catch (error) {
       toast.error(error.response.data.message)
       console.error("Login failed:", error.response?.data?.message || error.message);
       // Optionally show error to user
     }
-
   } else {
     console.log("Validation failed");
   }
@@ -67,65 +66,64 @@ export default function Login() {
 
 
   return (
-    <div className="container">
-      <div
-        className="login-box mx-auto mt-5 p-4 bg-white rounded shadow"
-        style={{ maxWidth: "420px" }}
-      >
-        <div className="text-center mb-3">
-          <span className="brand-name text-primary fw-bold fs-4">
-            Able <sup>pro</sup>
-          </span>
-        </div>
-        <h4 className="login-title fw-bold">Login</h4>
-        <p className="text-end small">
-          <NavLink to="/Register">Don't have an account?</NavLink>
-        </p>
-        <div className="mb-3">
-          <label className="form-label">Email Address</label>
-          <input
-            type="email"
-            className="form-control bg-light"
-            placeholder="admin@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {errors.email && <small className="text-danger">{errors.email}</small>}
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Password</label>
-          <div className="input-group">
+    <div className="mainLogin">
+      <div className="container loginBgColor">
+        <div className="login-box mx-auto bg-white" >
+          <div className="text-center mb-3">
+            <span className="brand-name text-primary fw-bold fs-4">
+              Able <sup>pro</sup>
+            </span>
+          </div>
+          <h4 className="login-title">Login</h4>
+          <p className="text-end small">
+            <NavLink to="/Register">Don't have an account?</NavLink>
+          </p>
+          <div className="mb-3">
+            <label className="form-label">Email Address</label>
             <input
-              type="password"
+              type="email"
               className="form-control bg-light"
-              placeholder="••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              placeholder="admin@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
-            <button className="btn btn-outline-secondary" type="button">
-              👁
-            </button>
+            {errors.email && <small className="text-danger">{errors.email}</small>}
           </div>
-          {errors.password && (
-            <small className="text-danger">{errors.password}</small>
-          )}
-        </div>
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <div>
-            <input type="checkbox" id="remember" />
-            <label htmlFor="remember" className="ms-1 small">
-              Keep me sign in
-            </label>
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+            <div className="input-group">
+              <input
+                type="password"
+                className="form-control bg-light"
+                placeholder="••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button className="btn btn-outline-secondary" type="button">
+                👁
+              </button>
+            </div>
+            {errors.password && (
+              <small className="text-danger">{errors.password}</small>
+            )}
           </div>
-          <a href="" className="small">
-            Forgot Password?
-          </a>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <input type="checkbox" id="remember" />
+              <label htmlFor="remember" className="ms-1 small">
+                Keep me sign in
+              </label>
+            </div>
+            <a href="" className="small">
+              Forgot Password?
+            </a>
+          </div>
+          <button className="btn btn-primary w-100" onClick={handleClick}>
+            Login
+          </button>
         </div>
-        <button className="btn btn-primary w-100" onClick={handleClick}>
-          Login
-        </button>
+            <ToastContainer />
       </div>
-          <ToastContainer />
     </div>
   );
 }

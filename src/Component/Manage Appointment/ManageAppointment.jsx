@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import Ract3d from "./Ract3d";
 import axios from "axios";
 import { baseurl } from "../../Baseurl";
+import Swal from "sweetalert2";
 
 export default function ManageAppointment() {
   const tableCell = (value) => <td>{value}</td>;
@@ -12,6 +13,7 @@ export default function ManageAppointment() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [openVital, setOpenVital] = useState(false);
+  const [openVital121, setOpenVital121] = useState(false);
   const [vitaldatas, setVitaldatas] = useState([]);
   const [inpval, setInpval] = useState("");
   const [dataAppointment, setDataAppointment] = useState([]);
@@ -49,8 +51,14 @@ export default function ManageAppointment() {
   const handleclickopenvital = () => {
     setOpenVital(true);
   };
+  const handleclickopenvital11 = () => {
+    setOpenVital121(true);
+  };
   const handlecloseVital = () => {
     setOpenVital(false);
+  };
+  const hndleclosemodalservice = () => {
+    setOpenVital121(false);
   };
   const services = [
     {
@@ -159,6 +167,53 @@ export default function ManageAppointment() {
     setInpval({ ...inpval, [name]: value });
   };
 
+  const handlesavevital123 = async () => {
+    try {
+      const dataPost = {
+       serviceName: inpval.serviceName,
+ description: inpval.description,
+ category: inpval.category,
+ durationMinutes: parseInt(inpval.durationMinutes),
+ standardCost: parseInt(inpval.standardCost),
+ secondaryCost: parseInt(inpval.secondaryCost),
+ insuranceCost:parseInt(inpval.insuranceCost)
+      };
+      const response = await axios.post(
+        `${baseurl}addService`,
+        dataPost
+      );
+
+      // Optional: check status and show success
+      if (response.status === 200 || response.status === 201) {
+        hndleclosemodalservice();
+        console.log("Vitals recorded successfully:", response.data);
+         Swal.fire("Success", "Vitals saved successfully.", "success");
+        // alert("Vitals saved successfully.");
+      } else {
+        console.warn("Unexpected response:", response);
+         Swal.fire("error", "Unexpected server response. Please try again.", "error");
+        // alert("Unexpected server response. Please try again.");
+      }
+    } catch (error) {
+      if (error.response) {
+        // Backend responded with error
+        console.error("Error response:", error.response.data);
+        // alert(
+        //   `Error: ${error.response.data.message || "Something went wrong"}`
+        // );
+      } else if (error.request) {
+        // Request was made but no response received
+        console.error("No response received:", error.request);
+        alert(
+          "No response from server. Please check your internet connection."
+        );
+      } else {
+        // Other errors
+        console.error("Error setting up request:", error.message);
+        
+      }
+    }
+  };
   const handlesavevital = async () => {
     try {
       if (!location?.state?.patientid || !inpval.nurse || !inpval.recorded_at) {
@@ -1437,6 +1492,13 @@ export default function ManageAppointment() {
                       <h5 className="mb-3 mb-sm-0">Vital Sign </h5>
                       <div>
                         <button
+                          className="btn btn-primary mx-2"
+                          onClick={handleclickopenvital11}
+                        >
+                          {" "}
+                          Add Services
+                        </button>
+                        <button
                           className="btn btn-primary"
                           onClick={handleclickopenvital}
                         >
@@ -1681,6 +1743,125 @@ export default function ManageAppointment() {
                                     onClick={handlesavevital}
                                   >
                                     Create vital
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                         {openVital121 && (
+                        <div
+                          className="modal fade show"
+                          style={{
+                            backgroundColor: "rgba(0,0,0,0.5)",
+                            display: "block",
+                          }}
+                        >
+                          <div className="modal-dialog modal-lg">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h5 className="modal-title">Add Services</h5>
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  onClick={hndleclosemodalservice}
+                                ></button>
+                              </div>
+                              <div className="modal-body">
+                                {/* Form for adding doctor */}
+
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <label className="form-label">Service Name</label>
+                                    <input
+                                      type="text"
+                                      name="serviceName"
+                                      onChange={handlechange}
+                                      className="form-control"
+                                    />
+                                  </div>
+                                  <div className="col-md-6">
+                                    <label className="form-label">
+                                      Description
+                                    </label>
+                                    <input
+                                      type="text"
+                                      name="description"
+                                      onChange={handlechange}
+                                      className="form-control"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <label className="form-label">
+                                      Category
+                                    </label>
+                                    <input
+                                      type="text"
+                                      name="category"
+                                      onChange={handlechange}
+                                      className="form-control"
+                                    />
+                                  </div>
+                                  <div className="col-md-6">
+                                    <label className="form-label">
+                                      Duration
+                                    </label>
+                                    <input
+                                      type="text"
+                                      name="durationMinutes"
+                                      onChange={handlechange}
+                                      className="form-control"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <label className="form-label">
+                                     Standard Cost
+                                    </label>
+                                    <input
+                                      type="text"
+                                      name="standardCost"
+                                      onChange={handlechange}
+                                      className="form-control"
+                                    />
+                                  </div>
+                                  <div className="col-md-6">
+                                    <label className="form-label">
+                                      Secondary Cost
+                                    </label>
+                                    <input
+                                      type="text"
+                                      name="secondaryCost"
+                                      onChange={handlechange}
+                                      className="form-control"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <label className="form-label">
+                                      Insurance Cost
+                                    </label>
+                                    <input
+                                      type="text"
+                                      name="insuranceCost"
+                                      onChange={handlechange}
+                                      className="form-control"
+                                    />
+                                  </div>
+                                  </div>
+                                  
+                                <div className="modal-footer my-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={handlesavevital123}
+                                  >
+                                    Add Service
                                   </button>
                                 </div>
                               </div>

@@ -103,10 +103,10 @@ const AddPatientForm = () => {
         },
       });
 
-      if (response.status === 200) {
+      if (response.data.success	=== true ) {
         setSubmitted(true);
-        toast.success("Patient added successfully!");
         navigate("/Admin/patient");
+        toast.success("Patient added successfully!");
       } else {
         alert("Submission failed: " + response.data.message);
       }

@@ -5,6 +5,7 @@ import { baseurl } from "../../Baseurl";
 export default function Pharmacy() {
   const [activeTab, setActiveTab] = useState("tab1");
   const [modalOpen, setModalOpen] = useState(false);
+  const [data, setData] = useState("");
   const [drugs,setDrugs] = useState(false);
 
   const handleclick = () => {
@@ -38,6 +39,54 @@ export default function Pharmacy() {
   }
 };
 
+const handlechange =(e)=>{
+  const {name,value}=e.target
+  setData({...data,[name]:value})
+}
+
+const apihitnav = async () => {
+  const datapost = {
+    name: data?.name || '',
+    substance: data?.substance || '',
+    unit_of_measurement: data?.unit_of_measurement || '',
+    company: data?.company || '',
+    quality: data?.quality || '',
+    expiration_date: data?.expiration_date || '',
+    cost: data?.cost || '',
+    price: data?.price || '',
+  };
+
+  try {
+    // Basic validation (optional: customize according to your form requirements)
+    for (let key in datapost) {
+      if (datapost[key] === '') {
+        console.error(`Missing field: ${key}`);
+        return;
+      }
+    }
+
+    const response = await axios.post(`${baseurl}addDrug`, datapost);
+
+    if (response?.data?.success === true) {
+      setModalOpen(false)
+       getdata()
+      console.log('✅ Data posted successfully');
+    } else {
+      console.error('❌ Something went wrong:', response?.data?.message || 'Unknown error');
+    }
+  } catch (error) {
+    if (error.response) {
+      // Server responded with status other than 2xx
+      console.error('❌ Server Error:', error.response.data.message || error.response.data);
+    } else if (error.request) {
+      // Request was made but no response received
+      console.error('❌ Network Error: No response received from server');
+    } else {
+      // Error setting up the request
+      console.error('❌ Request Error:', error.message);
+    }
+  }
+};
 
   return (
     <div className="pc-container">
@@ -200,65 +249,46 @@ export default function Pharmacy() {
                     <div className="col-md-10">
                       <div className="row mb-3">
                         <div className="col-md-4">
-                          <label className="form-label">ID</label>
-                          <input type="text" className="form-control" name="" />
-                        </div>
-                        <div className="col-md-4">
                           <label className="form-label">Name</label>
-                          <input type="text" className="form-control" />
+                          <input type="text"  className="form-control" onChange={handlechange} name="name" />
                         </div>
                         <div className="col-md-4">
                           <label className="form-label">Substance</label>
-                          <input type="text" className="form-control" />
+                          <input type="text" className="form-control"  onChange={handlechange} name="substance" />
+                        </div>
+                        <div className="col-md-4">
+                          <label className="form-label">Unit of Measurement</label>
+                          <input type="text" className="form-control"  onChange={handlechange} name="unit_of_measurement" />
                         </div>
                       </div>
                       <div className="row mb-3">
                         <div className="col-md-4">
                           <label className="form-label">
-                            Unit Of Measurement
+                            Company
                           </label>
-                          <input type="text" className="form-control" />
-                        </div>
-                        <div className="col-md-4">
-                          <label className="form-label">Company</label>
-                          <input type="text" className="form-control" />
-                        </div>
-                        <div className="col-md-4">
-                          <label className="form-label">Substance</label>
-                          <input type="text" className="form-control" />
-                        </div>
-                      </div>
-                      <div className="row mb-3">
-                        <div className="col-md-4">
-                          <label className="form-label">Quality</label>
-                          <input type="text" className="form-control" />
+                          <input type="text"  onChange={handlechange} className="form-control" name="company" />
                         </div>
                         <div className="col-md-4">
                           <label className="form-label">Quality</label>
-                          <input type="text" className="form-control" />
+                          <input type="text"  onChange={handlechange} className="form-control" name="quality" />
                         </div>
                         <div className="col-md-4">
                           <label className="form-label">Expiration Date</label>
-                          <input type="date" className="form-control" />
+                          <input type="date"  onChange={handlechange} className="form-control" name="expiration_date" />
                         </div>
                       </div>
                       <div className="row mb-3">
                         <div className="col-md-4">
                           <label className="form-label">Cost</label>
-                          <input type="text" className="form-control" />
+                          <input type="text"  onChange={handlechange} className="form-control" name="cost" />
                         </div>
                         <div className="col-md-4">
                           <label className="form-label">Price</label>
-                          <input type="text" className="form-control" />
+                          <input type="text"  onChange={handlechange} className="form-control" name="price" />
                         </div>
-                        <div className="col-md-4 d-flex align-items-center">
-                          <input
-                            type="checkbox"
-                            className="form-check-input me-2"
-                          />
-                          <label className="form-check-label">Controller</label>
-                        </div>
+                      
                       </div>
+                     
                     </div>
                   </div>
                 </form>
@@ -272,8 +302,8 @@ export default function Pharmacy() {
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary">
-                Save changes
+              <button type="button" onClick={apihitnav} className="btn btn-primary">
+                Add Drug
               </button>
             </div>
           </div>
