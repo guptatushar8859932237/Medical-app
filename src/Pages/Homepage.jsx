@@ -8,6 +8,7 @@ import image7 from "../assests/insurance11.png";
 import image8 from "../assests/billing11.png";
 import image9 from "../assests/Reports11.png";
 import { NavLink } from "react-router-dom";
+
 const Homepage = () => {
   const cards = [
     {
@@ -60,6 +61,7 @@ const Homepage = () => {
       url: "/Admin/ReportsInc",
     },
   ];
+
   const appointments = [
     {
       doctor: "Dr. Nashita",
@@ -76,55 +78,68 @@ const Homepage = () => {
       patient: "Jane Smith",
     },
   ];
+
+  const renderCard = (card) => {
+    const content = (
+      <div className="card h-100 border-0 shadow-lg rounded-4 overflow-hidden hover-shadow">
+        {card.image && (
+          <img
+            src={card.image}
+            className="card-img-top"
+            alt={card.title}
+            style={{ height: "160px", objectFit: "cover" }}
+          />
+        )}
+        <div className="card-body text-center">
+          <h5 className="card-title fw-bold mb-2">{card.title}</h5>
+          <p className="card-text text-muted">{card.subtitle}</p>
+        </div>
+      </div>
+    );
+
+    return card.url ? (
+      <NavLink to={card.url} className="text-decoration-none text-dark">
+        {content}
+      </NavLink>
+    ) : (
+      content
+    );
+  };
+
   return (
     <div className="container py-4">
       <div className="row g-4">
+        {/* Left Section - Cards */}
         <div className="col-lg-9">
+          {/* Row 1 - 2 Cards */}
           <div className="row g-4">
-            {cards.map((card, index) => (
-              <div className="col-md-4" key={index}>
-                {card.url ? (
-                  <NavLink
-                    to={card.url}
-                    className="text-decoration-none text-dark"
-                  >
-                    <div className="card h-100 border-0 shadow-lg rounded-4 overflow-hidden hover-shadow">
-                      {card.image && (
-                        <img
-                          src={card.image}
-                          className="card-img-top"
-                          alt={card.title}
-                          style={{ height: "160px", objectFit: "cover" }}
-                        />
-                      )}
-                      <div className="card-body text-center">
-                        <h5 className="card-title fw-bold mb-2">
-                          {card.title}
-                        </h5>
-                        <p className="card-text text-muted">{card.subtitle}</p>
-                      </div>
-                    </div>
-                  </NavLink>
-                ) : (
-                  <div className="card h-100 border-0 shadow-lg rounded-4 overflow-hidden">
-                    {card.image && (
-                      <img
-                        src={card.image}
-                        className="card-img-top"
-                        alt={card.title}
-                        style={{ height: "160px", objectFit: "cover" }}
-                      />
-                    )}
-                    <div className="card-body text-center">
-                      <h5 className="card-title fw-bold mb-2">{card.title}</h5>
-                      <p className="card-text text-muted">{card.subtitle}</p>
-                    </div>
-                  </div>
-                )}
+            {cards.slice(0, 2).map((card, index) => (
+              <div className="col-md-6" key={index}>
+                {renderCard(card)}
+              </div>
+            ))}
+          </div>
+
+          {/* Row 2 - 3 Cards */}
+          <div className="row g-4 mt-1">
+            {cards.slice(2, 5).map((card, index) => (
+              <div className="col-md-4" key={index + 2}>
+                {renderCard(card)}
+              </div>
+            ))}
+          </div>
+
+          {/* Row 3 - 4 Cards */}
+          <div className="row g-4 mt-1">
+            {cards.slice(5, 9).map((card, index) => (
+              <div className="col-md-3" key={index + 5}>
+                {renderCard(card)}
               </div>
             ))}
           </div>
         </div>
+
+        {/* Right Section - Appointments */}
         <div className="col-lg-3">
           <div className="card shadow-lg rounded-4 bg-light p-3 border-0">
             <h5 className="fw-bold mb-3 text-dark">Upcoming Appointments</h5>
@@ -150,4 +165,5 @@ const Homepage = () => {
     </div>
   );
 };
+
 export default Homepage;

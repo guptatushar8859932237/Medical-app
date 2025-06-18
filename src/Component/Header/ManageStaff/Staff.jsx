@@ -207,7 +207,7 @@ export default function Staff() {
                                   />
                                 </div>
                                 <div className="flex-grow-1 ms-3">
-                                  <h6 className="mb-0">Airi Satou</h6>
+                                  <td className="mb-0">Airi Satou</td>
                                 </div>
                               </div>
                             </td>

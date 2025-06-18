@@ -177,11 +177,11 @@ export default function Appointment2() {
                                     />
                                   </div>
                                   <div className="flex-grow-1 ms-3">
-                                    <h6 className="mb-0">
+                                    <td className="mb-0">
                                       {new Date(
                                         item.appointmentDate
                                       ).toLocaleDateString("en-GB")}
-                                    </h6>
+                                    </td>
                                   </div>
                                 </div>
                               </td>

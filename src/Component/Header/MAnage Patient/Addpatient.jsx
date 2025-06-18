@@ -327,7 +327,6 @@ const AddPatientForm = () => {
                   onChange={handleChange}
                 />
               </div>
-
               <div className="col-md-4">
                 <label className="form-label">First Visit Date</label>
                 <input
@@ -348,7 +347,6 @@ const AddPatientForm = () => {
                     doctors && doctors.length>0 && doctors.map((item,index)=>{
                       console.log(item)  
                       return(
-
                           <>
                           <option value={item.id}>{item?.fullName}</option>
                           </>
@@ -356,13 +354,6 @@ const AddPatientForm = () => {
                     })
                   }
                 </select>
-                {/* <input
-                  type="text"
-                  name="defaultDoctorId"
-                  className="form-control"
-                  value={formData.defaultDoctorId}
-                  onChange={handleChange}
-                /> */}
               </div>
               <div className="col-md-4">
                 <label className="form-label">Emergency Contact Name</label>
@@ -404,8 +395,6 @@ const AddPatientForm = () => {
                   onChange={handleChange}
                 />
               </div>
-
-              {/* File Upload Fields */}
               <div className="col-md-4">
                 <label className="form-label">Profile Image</label>
                 <input
@@ -415,7 +404,6 @@ const AddPatientForm = () => {
                   onChange={handleFileChange}
                 />
               </div>
-
               <div className="col-md-4">
                 <label className="form-label">CPR Scan</label>
                 <input
@@ -425,7 +413,6 @@ const AddPatientForm = () => {
                   onChange={handleFileChange}
                 />
               </div>
-
               <div className="col-md-4">
                 <label className="form-label">Passport Copy</label>
                 <input
@@ -445,7 +432,6 @@ const AddPatientForm = () => {
                   onChange={handleChange}
                 />
               </div>
-
               <div className="col-12 mb-3">
                 <button type="submit" className="btn btn-primary">
                   Register
@@ -456,7 +442,6 @@ const AddPatientForm = () => {
         </div>
       </div>
     </div>
-    // </div>
   );
 };
 
