@@ -109,7 +109,7 @@ export default function Header() {
                   <small>Administrator</small>
                 </div>
                 <button
-                  className="btn btn-icon btn-link-secondary avtar"
+                  className="btn btn-icon btn-link-dark avtar"
                   onClick={toggleUserMenu}
                 >
                   <svg className="pc-icon">
