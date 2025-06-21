@@ -24,7 +24,8 @@ import DoctorDashboard from './Component/Header/ManageStaff/DoctorDashboard';
 import Reports from './Component/Reports/Reports';
 import Homepage from './Pages/Homepage';
 function App() {
-  console.log("hellow admin")
+  // console.log("hellow admin")
+  // console.log("git clone")
   return (
     <div className="App">
       <BrowserRouter basename='/medicalSystem'>
